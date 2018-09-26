@@ -7,10 +7,8 @@ from time import sleep
 import numpy as np
 from urllib import request, parse
 from tkinter import messagebox
-from lxml import etree
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from bs4 import BeautifulSoup
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import NoSuchElementException
@@ -32,7 +30,7 @@ current_index = -1  # -1
 current_page = 0
 
 
-# 显示图片
+# 显示图片，查看二值后的滑块和背景图片
 def show(template, x, y, w, h, block):
     # 展示圈出来的区域
     cv2.rectangle(template, (y, x), (y + w, x + h), (7, 249, 151), 2)
@@ -68,9 +66,10 @@ def get_image_position():
     block = cv2.imread(image1_name, 0)
     template = cv2.imread(image2_name, 0)
 
+    # 二值化之后的图片名称
     block_name = 'block.jpg'
     template_name = 'template.jpg'
-
+    # 将二值化后的图片进行保存
     cv2.imwrite(template_name, template)
     cv2.imwrite(block_name, block)
     block = cv2.imread(block_name)
@@ -225,10 +224,6 @@ def apply_for_good(good):
 
                 else:
                     print("未成功申请")
-                    # wd.quit()
-                    # wd.close()
-                    # wd.back()
-                    # change_to_last_window()
                 sleep(1)
                 wd.close()
                 again_to_applicable()
@@ -239,10 +234,6 @@ def apply_for_good(good):
                 sleep(1)
                 wd.close()
                 again_to_applicable()
-                # wd.close()
-                # wd.quit()
-                # wd.back()
-                # change_to_last_window()
             elif is_element_exist('link-login', True) and wd.find_element_by_class_name('link-login').is_displayed():   # 出现登录弹窗
                 print("出现登录")   # 暂时未处理，调用登录方法即可
                 wd.close()
@@ -256,21 +247,12 @@ def apply_for_good(good):
                         wd.window_handles
                 sleep(1)
                 again_to_applicable()
-                # wd.close()
-                # wd.quit()
-                # wd.back()
-                # change_to_last_window()
 
         elif is_element_exist("//div[contains(@class, 'state')]", False) and wd.find_element_by_xpath("//div[contains(@class, 'state')]").text == '您已提交申请，等待系统审核…':
             print("已申请，等待审核")
-            wd.close()
+            wd.close()  # 已申请，等待审核
             sleep(1)
             again_to_applicable()
-            # wd.quit()
-            # change_to_last_window()
-
-            # wd.close()  # 已申请，等待审核
-            # wd.back()
         else:
             print("未找到申请试用")
             wd.close()
@@ -283,24 +265,12 @@ def apply_for_good(good):
         wd.close()
         sleep(1)
         again_to_applicable()
-        # wd.quit()
-        # wd.close()
-        # wd.back()
-        # change_to_last_window()
     else:
         print("未找到申请试用")
         wd.close()  # 关闭当前窗口
         sleep(1)
         print("关闭当前窗口")
         again_to_applicable()
-
-
-# 切换到当前窗口前一个
-def change_to_last_window():
-    global current_window
-    handles = wd.window_handles
-    wd.switch_to.window(handles[-2])
-    current_window = handles[-2]
 
 
 # 切换到当前窗口
@@ -385,6 +355,7 @@ if __name__ == '__main__':
 # f.close()
 
 
+# from bs4 import BeautifulSoup
 # # 分析数据，生成字典
 # def analysis_content(url, page):
 #     content = get_current_page_content(url, page)
@@ -408,3 +379,11 @@ if __name__ == '__main__':
 #     # print('content: \n %s \n' % content)
 #     opener.close()
 #     return content
+
+# # 切换到当前窗口前一个
+# def change_to_last_window():
+#     global current_window
+#     handles = wd.window_handles
+#     wd.switch_to.window(handles[-2])
+#     current_window = handles[-2]
+
