@@ -112,7 +112,7 @@ def open_firefox(user_name, user_password, page):
     url = 'https://try.jd.com/activity/getActivityList'  # 全部试用 https://try.jd.com/activity/getActivityList?page=2
     try:
         page_num = '?page=%s' % page
-        current_page = page
+        current_page = int(page)
         wd.get(url+page_num)
         wait = WebDriverWait(wd, timeout=13)
         # # wait.until(expected_conditions.title_is("京东试用-专业的综合网上免费试用平台"))
@@ -242,9 +242,9 @@ def apply_for_good(good):
             else:
                 print("未找到关注并申请")
                 wd.close()
-                for window in wd.window_handles:
-                    if window != wd.window_handles[0]:
-                        wd.window_handles
+                # for window in wd.window_handles:
+                #     if window != wd.window_handles[0]:
+                #         wd.window_handles
                 sleep(1)
                 again_to_applicable()
 
